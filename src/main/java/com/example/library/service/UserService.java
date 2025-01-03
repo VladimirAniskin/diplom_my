@@ -12,8 +12,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-
+/**
+ * Сервис для управления пользователями.
+ * Предоставляет методы для создания, обновления, удаления и получения списка пользователей.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -21,7 +23,13 @@ public class UserService {
     private final UserMapper userMapper;
 
     private final UserRepository userRepository;
-
+    /**
+     * Создает нового пользователя.
+     *
+     * @param dto объект UserDto, содержащий информацию о пользователе
+     * @return UserDto созданного пользователя
+     * @throws UserAlreadyExistsException если пользователь с таким email уже существует
+     */
     public UserDto createUser(UserDto dto) throws UserAlreadyExistsException {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new UserAlreadyExistsException("Пользователь с таким email уже существует.");
@@ -30,15 +38,27 @@ public class UserService {
         User resultUser = userRepository.save(user);
         return userMapper.toDto(resultUser);
     }
-
+    /**
+     * Обновляет информацию о пользователе.
+     *
+     * @param id идентификатор пользователя
+     * @param dto объект UserDto с новыми данными
+     * @return UserDto обновленного пользователя
+     * @throws ResponseStatusException если пользователь не найден
+     */
     public UserDto updateUser(Long id, UserDto dto) {
         User user = userRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Entity with id `%s` not found".formatted(id)));
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Пользователь с id `%s` не найден".formatted(id)));
         userMapper.updateWithNull(dto, user);
         User resultUser = userRepository.save(user);
         return userMapper.toDto(resultUser);
     }
-
+    /**
+     * Удаляет пользователя по идентификатору.
+     *
+     * @param id идентификатор пользователя
+     * @return UserDto удаленного пользователя или null, если пользователь не найден
+     */
     public UserDto deleteUser(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
@@ -46,7 +66,13 @@ public class UserService {
         }
         return userMapper.toDto(user);
     }
-
+    /**
+     * Получает список пользователей с применением фильтрации и пагинации.
+     *
+     * @param filter фильтр для поиска пользователей
+     * @param pageable параметры пагинации
+     * @return Page<UserDto> страница пользователей
+     */
     public Page<UserDto> getList(UserFilter filter, Pageable pageable) {
         Specification<User> spec = filter.toSpecification();
         Page<User> users = userRepository.findAll(spec, pageable);

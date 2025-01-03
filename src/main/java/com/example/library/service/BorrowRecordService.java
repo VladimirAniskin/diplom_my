@@ -12,8 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-
-
+/**
+ * Сервис для управления записями о выдаче книг.
+ * Предоставляет методы для аренды и возврата книг.
+ */
 @Service
 @RequiredArgsConstructor
 public class BorrowRecordService {
@@ -25,16 +27,23 @@ public class BorrowRecordService {
     private final UserRepository userRepository;
 
     private final BookRepository bookRepository;
-
-
+    /**
+     * Оформляет аренду книги для пользователя.
+     *
+     * @param dto объект BorrowRecordsDto, содержащий информацию о пользователе и книге
+     * @return BorrowRecordsDto созданной записи о выдаче книги
+     * @throws EntityNotFoundException если пользователь или книга не найдены
+     * @throws IllegalStateException если нет доступных экземпляров книги
+     */
     public BorrowRecordsDto bookRental(BorrowRecordsDto dto) {
+        // Поиск пользователя по идентификатору
         User user = userRepository.findById(dto.getUserId().getId()).orElseThrow(() ->
-                new EntityNotFoundException("User  not found with id: " + dto.getUserId().getId()));
+                new EntityNotFoundException("Пользователь не наден с id: " + dto.getUserId().getId()));
         // Проверка существования книги и доступности экземпляров
         Book book = bookRepository.findById(dto.getBookId().getId()).orElseThrow(() ->
-                new EntityNotFoundException("Book not found with id: " + dto.getBookId()));
+                new EntityNotFoundException("Книга не найдена с  id: " + dto.getBookId()));
         if (book.getNumberOfCopies() <= 0) {
-            throw new IllegalStateException("No available copies of the book: " + book.getNumberOfCopies());
+            throw new IllegalStateException("Нет доступных экземпляров книг: " + book.getNumberOfCopies());
         }
         // Создание записи о выдаче книги
         BorrowRecords borrowRecords = borrowRecordsMapper.toEntity(dto);
@@ -47,10 +56,17 @@ public class BorrowRecordService {
         bookRepository.save(book);
         return borrowRecordsMapper.toDto(resultBorrowRecords);
     }
-
+    /**
+     * Обрабатывает возврат книги.
+     *
+     * @param id идентификатор записи о выдаче
+     * @return BorrowRecordsDto обновленной записи о выдаче книги
+     * @throws EntityNotFoundException если запись о выдаче не найдена
+     */
     public BorrowRecordsDto bookReturn(Long id) {
+        // Поиск записи о выдаче по идентификатору
         BorrowRecords borrowRecord = borrowRecordsRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Borrow record not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Запись о выдаче не надена с id: " + id));
         // Проверка даты возврата
         LocalDate returnDate = borrowRecord.getReturnDate();
         // Проверка задержки возврата если книга просрочена, сохранение даты возврата

@@ -2,6 +2,9 @@ package com.example.library.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.Value;
 
 /**
@@ -11,6 +14,7 @@ import lombok.Value;
  * @see com.example.library.mod.User
  */
 @Value
+@Setter
 public class UserDto {
     /**
      * Имя пользователя.
@@ -26,4 +30,10 @@ public class UserDto {
     @NotNull
     @Email(message = "В почте отсутствует @ или .ru ")
     String email;
+    /**
+     * Для теста
+     */
+
+    public void setId(long l) {
+    }
 }

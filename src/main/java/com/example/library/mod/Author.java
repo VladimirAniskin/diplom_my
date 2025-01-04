@@ -1,10 +1,7 @@
 package com.example.library.mod;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.repository.cdi.Eager;
 /**
  * Класс сущности Author, представляющий автора в системе.
@@ -30,6 +27,7 @@ public class Author {
     /**
      * Имя автора.
      */
+    @NonNull
     private String name;
     /**
      * Страна автора.

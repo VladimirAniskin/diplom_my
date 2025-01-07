@@ -10,6 +10,8 @@ import com.example.library.repo.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.kafka.core.KafkaTemplate;
+
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -26,6 +28,7 @@ public class BorrowRecordServiceTest {
     private BorrowRecordsRepository borrowRecordsRepository; // Мок репозитория записей о выдаче
     private UserRepository userRepository; // Мок репозитория пользователей
     private BookRepository bookRepository; // Мок репозитория книг
+    private KafkaTemplate<String, String> kafkaTemplate;
     /**
      * Подготовка данных перед каждым тестом.
      * Инициализирует моки для всех зависимостей сервиса BorrowRecordService.
@@ -36,8 +39,9 @@ public class BorrowRecordServiceTest {
         borrowRecordsRepository = mock(BorrowRecordsRepository.class);
         userRepository = mock(UserRepository.class);
         bookRepository = mock(BookRepository.class);
+        kafkaTemplate = (KafkaTemplate<String, String>) mock(BorrowRecordsRepository.class);
         borrowRecordService = new BorrowRecordService(borrowRecordsMapper,
-                borrowRecordsRepository, userRepository, bookRepository);
+                borrowRecordsRepository, userRepository, bookRepository, kafkaTemplate);
     }
     /**
      * Проверяет, что метод bookRental возвращает BorrowRecordsDto, когда книга успешно арендована.

@@ -8,10 +8,16 @@ import com.example.library.repo.BookRepository;
 import com.example.library.repo.BorrowRecordsRepository;
 import com.example.library.repo.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+
 /**
  * Сервис для управления записями о выдаче книг.
  * Предоставляет методы для аренды и возврата книг.
@@ -27,6 +33,8 @@ public class BorrowRecordService {
     private final UserRepository userRepository;
 
     private final BookRepository bookRepository;
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
     /**
      * Оформляет аренду книги для пользователя.
      *
@@ -54,6 +62,7 @@ public class BorrowRecordService {
         // Уменьшение количества экземпляров книги
         book.setNumberOfCopies(book.getNumberOfCopies() - 1);
         bookRepository.save(book);
+        // Вызов метода для уведомления пользователя о необходимости вернуть книгу
         return borrowRecordsMapper.toDto(resultBorrowRecords);
     }
     /**
@@ -87,5 +96,28 @@ public class BorrowRecordService {
         // Сохранение обновленной записи о выдаче
         BorrowRecords updatedBorrowRecord = borrowRecordsRepository.save(borrowRecord);
         return borrowRecordsMapper.toDto(updatedBorrowRecord);
+    }
+
+    /**
+     * Метод, который запускается раз в сутки и проверяет записи о возврате книг.
+     * Если срок возврата книги истекает через 3 дня, отправляет уведомление.
+     */
+    @Scheduled(cron = "0 0 7 * * ?") // Каждое утро в 7:00
+    public void returnBook() {
+        LocalDate today = LocalDate.now();
+        LocalDate threeDaysFromNow = today.plusDays(3);
+        // Получаем все записи о выдаче книг
+        List<BorrowRecords> borrowRecords = borrowRecordsRepository.findAll();
+        for (BorrowRecords record : borrowRecords) {
+            LocalDate returnDate = record.getReturnDate();
+            // Проверяем, если срок возврата книги истекает через 3 дня
+            if (returnDate != null && returnDate.equals(threeDaysFromNow)) {
+                User user = record.getUserId(); // Получаем пользователя
+                Book book = record.getBookId(); // Получаем книгу
+                // Отправляем уведомление через Kafka
+                kafkaTemplate.send("return-book", "Напоминание: Срок сдачи книги с ID " +
+                        book.getId() + " для пользователя с ID " + user.getId() + " истекает через 3 дня.");
+            }
+        }
     }
 }

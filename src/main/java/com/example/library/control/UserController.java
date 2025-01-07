@@ -3,14 +3,17 @@ import com.example.library.dto.UserDto;
 import com.example.library.exception.UserAlreadyExistsException;
 import com.example.library.filter.UserFilter;
 import com.example.library.service.UserService;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 import javax.validation.Valid;
+
+
 /**
  * Контроллер для управления пользователями.
  * Предоставляет REST API для создания, обновления, удаления и получения информации о пользователях.
@@ -69,5 +72,4 @@ public class UserController {
         Page<UserDto> userDtos = userService.getList(filter, pageable);
         return new PagedModel<>(userDtos);
     }
-
 }

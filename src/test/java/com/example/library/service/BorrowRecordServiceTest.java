@@ -11,11 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.kafka.core.KafkaTemplate;
-
-import java.time.LocalDate;
 import java.util.Optional;
-
-import static jnr.ffi.NativeLong.valueOf;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 /**
@@ -39,9 +35,8 @@ public class BorrowRecordServiceTest {
         borrowRecordsRepository = mock(BorrowRecordsRepository.class);
         userRepository = mock(UserRepository.class);
         bookRepository = mock(BookRepository.class);
-        kafkaTemplate = (KafkaTemplate<String, String>) mock(BorrowRecordsRepository.class);
         borrowRecordService = new BorrowRecordService(borrowRecordsMapper,
-                borrowRecordsRepository, userRepository, bookRepository, kafkaTemplate);
+                borrowRecordsRepository, userRepository, bookRepository);
     }
     /**
      * Проверяет, что метод bookRental возвращает BorrowRecordsDto, когда книга успешно арендована.

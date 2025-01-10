@@ -3,6 +3,7 @@ import com.example.library.dto.BorrowRecordsDto;
 import com.example.library.service.BorrowRecordService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import com.example.library.mod.Book;
 import org.springframework.web.bind.annotation.*;
 /**
  * Контроллер для управления записями о заимствовании книг.
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class BorrowRecordController {
 
     private final BorrowRecordService borrowRecordService;
+
     /**
      * Обрабатывает запрос на аренду книги.
      *
@@ -23,9 +25,10 @@ public class BorrowRecordController {
      */
 
     @PostMapping(value = "/borrow")
-    public @ResponseBody BorrowRecordsDto bookRental(@RequestBody BorrowRecordsDto dto) {
+    public @ResponseBody BorrowRecordsDto bookRental ( @RequestBody BorrowRecordsDto dto ) {
         return borrowRecordService.bookRental(dto);
     }
+
     /**
      * Обрабатывает запрос на возврат книги по ее идентификатору.
      *
@@ -33,7 +36,13 @@ public class BorrowRecordController {
      * @return объект BorrowRecordsDto, представляющий обновленную запись о возврате книги
      */
     @PutMapping(value = "/returnBook/{id}")
-    public @ResponseBody BorrowRecordsDto bookReturn(@PathVariable Long id) {
+    public @ResponseBody BorrowRecordsDto bookReturn ( @PathVariable Long id ) {
         return borrowRecordService.bookReturn(id);
+    }
+
+    @GetMapping("/most-popular")
+    public Book getMostPopularBook () {
+        return borrowRecordService.getMostPopularBook();
+
     }
 }

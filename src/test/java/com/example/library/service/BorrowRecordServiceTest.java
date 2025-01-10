@@ -10,6 +10,8 @@ import com.example.library.repo.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.kafka.core.KafkaTemplate;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,12 +21,17 @@ import static org.mockito.Mockito.*;
  * Проверяет логику аренды и возврата книг, а также обработку ошибок.
  */
 public class BorrowRecordServiceTest {
+    @InjectMocks
     private BorrowRecordService borrowRecordService; // Сервис, который тестирую
+    @Mock
     private BorrowRecordsMapper borrowRecordsMapper; // Мок маппера записей о выдаче
+    @Mock
     private BorrowRecordsRepository borrowRecordsRepository; // Мок репозитория записей о выдаче
+    @Mock
     private UserRepository userRepository; // Мок репозитория пользователей
+    @Mock
     private BookRepository bookRepository; // Мок репозитория книг
-    private KafkaTemplate<String, String> kafkaTemplate;
+
     /**
      * Подготовка данных перед каждым тестом.
      * Инициализирует моки для всех зависимостей сервиса BorrowRecordService.

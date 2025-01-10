@@ -15,7 +15,6 @@ public class AuthorDto {
      * Имя автора.
      * Не должно быть пустым или null.
      */
-    @NotNull
     String name;
     /**
      * Страна автора.

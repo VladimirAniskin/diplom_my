@@ -76,7 +76,7 @@ public class BookServiceTest {
         Exception exception = assertThrows(ResponseStatusException.class, () -> {
             bookService.update(bookId, bookDto);
         });
-        assertEquals("404 NOT_FOUND \"Книга с  id `1` не надена\"", exception.getMessage());
+        assertEquals("404 NOT_FOUND \"Книга с id `1` не найдена\"", exception.getMessage());
         verify(bookRepository).findById(bookId);
     }
     /**

@@ -21,6 +21,8 @@ public class BrokerService {
      * Метод, который запускается раз в сутки и проверяет записи о возврате книг.
      * Если срок возврата книги истекает через 3 дня, отправляет уведомление.
      */
+
+    //@Scheduled(cron = "*/1 * * * * ?") // Каждую секунду
     @Scheduled(cron = "0 0 7 * * ?") // Каждое утро в 7:00
     public void returnBook() {
         LocalDate currentDate = LocalDate.now();
@@ -30,9 +32,15 @@ public class BrokerService {
         for (BorrowRecords record : borrowRecords) {
             User user = record.getUserId(); // Получение пользователя
             Book book = record.getBookId(); // Получение книги
-            // Отправка уведомления через Kafka
-            kafkaTemplate.send("return-book", "Напоминание: Срок сдачи книги с ID " +
-                    book.getId() + " для пользователя с ID " + user.getId() + " истекает через 3 дня.");
+            // Проверка на null перед отправкой уведомления
+            if (book != null && user != null) {
+                // Отправка уведомления через Kafka
+                kafkaTemplate.send("return-book", "Напоминание: Срок сдачи книги с ID " +
+                        book.getId() + " для пользователя с ID " + user.getId() + " истекает через 3 дня.");
+            } else {
+                // Логирование или обработка случая, когда book или user равен null
+                System.out.println("Запись о выдаче книги содержит null для книги или пользователя.");
+            }
         }
     }
 }

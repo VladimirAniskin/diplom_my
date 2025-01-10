@@ -11,12 +11,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserRepository extends JpaRepository <User, Long>, JpaSpecificationExecutor<User> {
-    /**
-     * Проверяет, существует ли пользователь с указанным адресом электронной почты.
-     *
-     * @param email адрес электронной почты пользователя
-     * @return true, если пользователь с таким адресом электронной почты существует, иначе false
-     */
-    boolean existsByEmail(String email);
 
-   }
+
+   boolean existsByEmail ( String email );
+}

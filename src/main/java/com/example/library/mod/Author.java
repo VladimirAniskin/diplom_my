@@ -10,7 +10,6 @@ import org.springframework.data.repository.cdi.Eager;
  */
 @Data
 @Entity
-@Eager
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -27,7 +26,6 @@ public class Author {
     /**
      * Имя автора.
      */
-    @NonNull
     private String name;
     /**
      * Страна автора.

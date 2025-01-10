@@ -28,9 +28,8 @@ public class UserService {
      *
      * @param dto объект UserDto, содержащий информацию о пользователе
      * @return UserDto созданного пользователя
-     * @throws UserAlreadyExistsException если пользователь с таким email уже существует
      */
-    public UserDto createUser(UserDto dto) throws UserAlreadyExistsException {
+    public UserDto create ( UserDto dto ) throws UserAlreadyExistsException {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new UserAlreadyExistsException("Пользователь с таким email уже существует.");
         }
@@ -46,9 +45,10 @@ public class UserService {
      * @return UserDto обновленного пользователя
      * @throws ResponseStatusException если пользователь не найден
      */
-    public UserDto updateUser(Long id, UserDto dto) {
+
+    public UserDto update ( Long id, UserDto dto ) {
         User user = userRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Пользователь с id `%s` не найден".formatted(id)));
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "пользователь с id `%s` не найден".formatted(id)));
         userMapper.updateWithNull(dto, user);
         User resultUser = userRepository.save(user);
         return userMapper.toDto(resultUser);
@@ -59,7 +59,8 @@ public class UserService {
      * @param id идентификатор пользователя
      * @return UserDto удаленного пользователя или null, если пользователь не найден
      */
-    public UserDto deleteUser(Long id) {
+
+    public UserDto delete ( Long id ) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
             userRepository.delete(user);
@@ -73,7 +74,8 @@ public class UserService {
      * @param pageable параметры пагинации
      * @return Page<UserDto> страница пользователей
      */
-    public Page<UserDto> getList(UserFilter filter, Pageable pageable) {
+
+    public Page<UserDto> getList ( UserFilter filter, Pageable pageable ) {
         Specification<User> spec = filter.toSpecification();
         Page<User> users = userRepository.findAll(spec, pageable);
         return users.map(userMapper::toDto);

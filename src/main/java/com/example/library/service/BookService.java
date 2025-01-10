@@ -4,6 +4,7 @@ import com.example.library.maper.BookMapper;
 import com.example.library.dto.BookDto;
 import com.example.library.mod.Book;
 import com.example.library.repo.BookRepository;
+import com.example.library.repo.BorrowRecordsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,13 +25,15 @@ public class BookService {
     private final BookMapper bookMapper;
 
     private final BookRepository bookRepository;
+
+
     /**
      * Создает новую книгу.
      *
      * @param dto объект BookDto, содержащий информацию о новой книге
      * @return BookDto созданной книги
      */
-    public BookDto create(BookDto dto) {
+    public BookDto create ( BookDto dto ) {
         Book book = bookMapper.toEntity(dto);
         Book resultBook = bookRepository.save(book);
         return bookMapper.toDto(resultBook);
@@ -43,13 +46,14 @@ public class BookService {
      * @return BookDto обновленной книги
      * @throws ResponseStatusException если книга с указанным идентификатором не найдена
      */
-    public BookDto update(Long id, BookDto dto) {
+    public BookDto update ( Long id, BookDto dto ) {
         Book book = bookRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Книга с  id `%s` не надена".formatted(id)));
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Книга с id `%s` не найдена".formatted(id)));
         bookMapper.updateWithNull(dto, book);
         Book resultBook = bookRepository.save(book);
         return bookMapper.toDto(resultBook);
     }
+
     /**
      * Удаляет книгу по идентификатору.
      *
@@ -87,4 +91,7 @@ public class BookService {
         Page<Book> books = bookRepository.findAll(spec, pageable);
         return books.map(bookMapper::toDto);
     }
+
+
+
 }

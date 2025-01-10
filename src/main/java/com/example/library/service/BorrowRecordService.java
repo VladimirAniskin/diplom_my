@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 
 /**
@@ -95,6 +96,20 @@ public class BorrowRecordService {
         // Сохранение обновленной записи о выдаче
         BorrowRecords updatedBorrowRecord = borrowRecordsRepository.save(borrowRecord);
         return borrowRecordsMapper.toDto(updatedBorrowRecord);
+    }
+
+    /**
+     * Получает самую популярную книгу на основе количества займов.
+     *
+     * @return Book самая популярная книга
+     */
+    public Book getMostPopularBook() {
+        List<Object[]> results = borrowRecordsRepository.findMostPopularBook();
+        if (!results.isEmpty()) {
+            Long bookId = (Long) results.get(0)[0]; // Получаем ID книги
+            return bookRepository.findById(bookId).orElse(null);
+        }
+        return null; // Если нет записей о займах
     }
 
 

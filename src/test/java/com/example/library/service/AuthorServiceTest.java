@@ -26,7 +26,9 @@ public class AuthorServiceTest {
     private AuthorMapper authorMapper; // Маппер для преобразования между Author и AuthorDto
     @Mock
     private AuthorRepository authorRepository; // Репозиторий для работы с данными авторов
+    @Mock
     private AuthorDto authorDto; // DTO для автора
+    @Mock
     private Author author; // Сущность автора
     /**
      * Подготовка данных перед каждым тестом.

@@ -30,10 +30,7 @@ public class BookController {
      * @param dto объект передачи данных книги, который содержит информацию о новой книге
      * @return созданный объект BookDto
      */
-    @PostMapping(value = "/createBook")
-    public BookDto create(@RequestBody @Valid BookDto dto) {
-        return bookService.create(dto);
-    }
+
     /**
      * Обновляет информацию о книге по ее идентификатору.
      *
@@ -41,10 +38,7 @@ public class BookController {
      * @param dto объект передачи данных книги с обновленной информацией
      * @return обновленный объект BookDto
      */
-    @PutMapping(value = "/upgrateBook/{id}")
-    public BookDto update(@PathVariable Long id, @RequestBody @Valid BookDto dto) {
-        return bookService.update(id, dto);
-    }
+
     /**
      * Удаляет книгу по ее идентификатору.
      *
@@ -78,5 +72,15 @@ public class BookController {
     public PagedModel<BookDto> getList(@ParameterObject @ModelAttribute BookFilter filter, @ParameterObject Pageable pageable) {
         Page<BookDto> bookDtos = bookService.getList(filter, pageable);
         return new PagedModel<>(bookDtos);
+    }
+
+    @PutMapping("/bookUpdate/{id}")
+    public BookDto update ( @PathVariable Long id, @RequestBody @Valid BookDto dto ) {
+        return bookService.update(id, dto);
+    }
+
+    @PostMapping("/creareBook")
+    public BookDto create ( @RequestBody @Valid BookDto dto ) {
+        return bookService.create(dto);
     }
 }

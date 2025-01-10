@@ -17,4 +17,6 @@ import java.util.List;
 public interface BorrowRecordsRepository extends JpaRepository<BorrowRecords, Long> {
     @Query("SELECT r FROM BorrowRecords r WHERE r.returnDate = :targetDate")
     List<BorrowRecords> findBorrowRecordsByReturnDate(@Param("targetDate") LocalDate targetDate);
+    @Query("SELECT br.bookId.id, COUNT(br) FROM BorrowRecords br GROUP BY br.bookId.id ORDER BY COUNT(br) DESC")
+    List<Object[]> findMostPopularBook();
 }

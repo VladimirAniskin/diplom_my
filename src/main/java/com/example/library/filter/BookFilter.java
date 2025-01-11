@@ -2,6 +2,7 @@ package com.example.library.filter;
 
 import com.example.library.mod.Book;
 import org.springframework.data.jpa.domain.Specification;
+
 /**
  * Класс фильтра для поиска книг по определенным критериям.
  * В данный момент поддерживает фильтрацию по идентификатору книги.
@@ -17,11 +18,12 @@ public record BookFilter(Long id) {
     public Specification<Book> toSpecification() {
         return Specification.where(idSpec());
     }
+
     /**
      * Создает спецификацию для фильтрации книг по идентификатору.
      *
      * @return спецификация, которая фильтрует книги по идентификатору,
-     *         или null, если идентификатор не задан
+     * или null, если идентификатор не задан
      */
     private Specification<Book> idSpec() {
         return ((root, query, cb) -> id != null

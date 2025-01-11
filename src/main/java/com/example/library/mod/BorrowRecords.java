@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+
 /**
  * Класс сущности BorrowRecords, представляющий записи о заемах книг в системе.
  * Использует аннотации JPA для определения структуры таблицы в базе данных.
@@ -52,6 +53,7 @@ public class BorrowRecords {
      */
     @Column(name = "due_date")
     private LocalDate dueDate;
+
     /**
      * Метод, который вызывается перед сохранением записи в базу данных.
      * Устанавливает дату займа и дату возврата по умолчанию.

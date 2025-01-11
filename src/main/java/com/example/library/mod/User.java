@@ -1,8 +1,11 @@
 package com.example.library.mod;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
+
 import java.time.LocalDate;
+
 /**
  * Класс сущности User, представляющий пользователя в системе.
  * Использует аннотации JPA для определения структуры таблицы в базе данных.
@@ -39,6 +42,7 @@ public class User {
      */
     @Column(name = "registration_date", updatable = false)
     private LocalDate registrationDate;
+
     /**
      * Метод, который вызывается перед сохранением пользователя в базу данных.
      * Устанавливает дату регистрации по умолчанию.
@@ -48,7 +52,6 @@ public class User {
 
         this.registrationDate = LocalDate.now();
     }
-
 
 
 }

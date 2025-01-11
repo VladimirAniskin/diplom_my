@@ -3,12 +3,13 @@ package com.example.library.repo;
 import com.example.library.mod.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 /**
  * Интерфейс AuthorRepository, предоставляющий методы для работы с сущностью Author.
  * Расширяет JpaRepository для использования стандартных операций CRUD.
  */
 @Repository
-public interface AuthorRepository  extends JpaRepository<Author, Long> {
+public interface AuthorRepository extends JpaRepository<Author, Long> {
     /**
      * Проверяет, существует ли автор с указанным именем.
      *
@@ -16,6 +17,7 @@ public interface AuthorRepository  extends JpaRepository<Author, Long> {
      * @return true, если автор с таким именем существует, иначе false
      */
     boolean existsByName(String name);
+
     /**
      * Находит автора по стране.
      *

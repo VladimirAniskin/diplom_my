@@ -1,4 +1,5 @@
 package com.example.library.control;
+
 import com.example.library.dto.UserDto;
 import com.example.library.exception.UserAlreadyExistsException;
 import com.example.library.filter.UserFilter;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+
     /**
      * Создает нового пользователя.
      *
@@ -30,9 +32,10 @@ public class UserController {
      * @throws UserAlreadyExistsException если пользователь с такими данными уже существует
      */
     @PostMapping("/createUaer")
-    public UserDto create ( @RequestBody @Valid UserDto dto ) throws UserAlreadyExistsException {
+    public UserDto create(@RequestBody @Valid UserDto dto) throws UserAlreadyExistsException {
         return userService.create(dto);
     }
+
     /**
      * Обновляет информацию о пользователе по его идентификатору.
      *
@@ -41,9 +44,10 @@ public class UserController {
      * @return обновленный объект UserDto
      */
     @PutMapping("/updateUser/{id}")
-    public UserDto update ( @PathVariable Long id, @RequestBody @Valid UserDto dto ) {
+    public UserDto update(@PathVariable Long id, @RequestBody @Valid UserDto dto) {
         return userService.update(id, dto);
     }
+
     /**
      * Удаляет пользователя по его идентификатору.
      *
@@ -51,12 +55,12 @@ public class UserController {
      * @return объект UserDto, представляющий удаленного пользователя
      */
     @DeleteMapping("/deleteUser/{id}")
-    public UserDto delete ( @PathVariable Long id ) {
+    public UserDto delete(@PathVariable Long id) {
         return userService.delete(id);
     }
 
     @GetMapping("/allUser")
-    public PagedModel<UserDto> getList ( @ParameterObject @ModelAttribute UserFilter filter, @ParameterObject Pageable pageable ) {
+    public PagedModel<UserDto> getList(@ParameterObject @ModelAttribute UserFilter filter, @ParameterObject Pageable pageable) {
         Page<UserDto> userDtos = userService.getList(filter, pageable);
         return new PagedModel<>(userDtos);
     }

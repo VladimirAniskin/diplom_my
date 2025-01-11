@@ -23,9 +23,11 @@ class BrokerServiceTest {
     private KafkaTemplate<String, String> kafkaTemplate;
     @InjectMocks
     private BrokerService brokerService;
+
     public BrokerServiceTest() {
         MockitoAnnotations.openMocks(this);
     }
+
     @Test
     void returnBook_ShouldSendNotification_WhenReturnDateIsInThreeDays() {
 

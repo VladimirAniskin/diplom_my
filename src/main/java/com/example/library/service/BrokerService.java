@@ -1,4 +1,5 @@
 package com.example.library.service;
+
 import com.example.library.mod.Book;
 import com.example.library.mod.BorrowRecords;
 import com.example.library.mod.User;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BrokerService {
@@ -17,6 +19,7 @@ public class BrokerService {
     private final BorrowRecordsRepository borrowRecordsRepository;
 
     private final KafkaTemplate<String, String> kafkaTemplate;
+
     /**
      * Метод, который запускается раз в сутки и проверяет записи о возврате книг.
      * Если срок возврата книги истекает через 3 дня, отправляет уведомление.

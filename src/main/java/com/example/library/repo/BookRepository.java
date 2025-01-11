@@ -4,6 +4,7 @@ import com.example.library.mod.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
+
 /**
  * Интерфейс BookRepository, предоставляющий методы для работы с сущностью Book.
  * Расширяет JpaRepository для использования стандартных операций CRUD

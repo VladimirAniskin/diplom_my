@@ -3,6 +3,7 @@ package com.example.library.mod;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.repository.cdi.Eager;
+
 /**
  * Класс сущности Author, представляющий автора в системе.
  * Использует аннотации JPA для определения структуры таблицы в базе данных.
@@ -31,7 +32,6 @@ public class Author {
      * Страна автора.
      */
     private String country;
-
 
 
 }

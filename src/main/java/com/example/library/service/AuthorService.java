@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+
 /**
  * Сервис для управления сущностями Author.
  * Предоставляет методы для создания, обновления, удаления и получения авторов.
@@ -22,6 +23,7 @@ public class AuthorService {
     private final AuthorMapper authorMapper;
 
     private final AuthorRepository authorRepository;
+
     /**
      * Создает нового автора.
      *
@@ -37,10 +39,11 @@ public class AuthorService {
         Author resultAuthor = authorRepository.save(author);
         return authorMapper.toDto(resultAuthor);
     }
+
     /**
      * Обновляет существующего автора.
      *
-     * @param id идентификатор автора
+     * @param id  идентификатор автора
      * @param dto объект AuthorDto с обновленной информацией
      * @return AuthorDto обновленного автора
      * @throws ResponseStatusException если автор с указанным идентификатором не найден
@@ -52,6 +55,7 @@ public class AuthorService {
         Author resultAuthor = authorRepository.save(author);
         return authorMapper.toDto(resultAuthor);
     }
+
     /**
      * Удаляет автора по идентификатору.
      *
@@ -65,6 +69,7 @@ public class AuthorService {
         }
         return authorMapper.toDto(author);
     }
+
     /**
      * Получает автора по идентификатору.
      *

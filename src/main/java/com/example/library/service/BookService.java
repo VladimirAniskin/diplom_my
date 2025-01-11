@@ -1,4 +1,5 @@
 package com.example.library.service;
+
 import com.example.library.filter.BookFilter;
 import com.example.library.maper.BookMapper;
 import com.example.library.dto.BookDto;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+
 /**
  * Сервис для управления сущностями Book.
  * Предоставляет методы для создания, обновления, удаления и получения книг.
@@ -33,20 +35,21 @@ public class BookService {
      * @param dto объект BookDto, содержащий информацию о новой книге
      * @return BookDto созданной книги
      */
-    public BookDto create ( BookDto dto ) {
+    public BookDto create(BookDto dto) {
         Book book = bookMapper.toEntity(dto);
         Book resultBook = bookRepository.save(book);
         return bookMapper.toDto(resultBook);
     }
+
     /**
      * Обновляет существующую книгу.
      *
-     * @param id идентификатор книги
+     * @param id  идентификатор книги
      * @param dto объект BookDto с обновленной информацией
      * @return BookDto обновленной книги
      * @throws ResponseStatusException если книга с указанным идентификатором не найдена
      */
-    public BookDto update ( Long id, BookDto dto ) {
+    public BookDto update(Long id, BookDto dto) {
         Book book = bookRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Книга с id `%s` не найдена".formatted(id)));
         bookMapper.updateWithNull(dto, book);
@@ -67,6 +70,7 @@ public class BookService {
         }
         return bookMapper.toDto(book);
     }
+
     /**
      * Получает книгу по идентификатору.
      *
@@ -79,10 +83,11 @@ public class BookService {
         return bookMapper.toDto(bookOptional.orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Книга с  id `%s` не надена".formatted(id))));
     }
+
     /**
      * Получает список книг с применением фильтрации и пагинации.
      *
-     * @param filter объект BookFilter для задания условий фильтрации
+     * @param filter   объект BookFilter для задания условий фильтрации
      * @param pageable объект Pageable для задания параметров пагинации
      * @return Page<BookDto> страница с книгами, соответствующими условиям фильтрации
      */
@@ -91,7 +96,6 @@ public class BookService {
         Page<Book> books = bookRepository.findAll(spec, pageable);
         return books.map(bookMapper::toDto);
     }
-
 
 
 }

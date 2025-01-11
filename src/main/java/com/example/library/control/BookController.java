@@ -1,4 +1,5 @@
 package com.example.library.control;
+
 import com.example.library.dto.BookDto;
 import com.example.library.filter.BookFilter;
 import com.example.library.service.BookService;
@@ -23,7 +24,7 @@ import javax.validation.Valid;
 @RequestMapping("/api")
 public class BookController {
 
-    private final   BookService bookService;
+    private final BookService bookService;
     /**
      * Создает новую книгу.
      *
@@ -50,6 +51,7 @@ public class BookController {
     public BookDto delete(@PathVariable Long id) {
         return bookService.delete(id);
     }
+
     /**
      * Получает информацию о книге по ее идентификатору.
      *
@@ -64,7 +66,7 @@ public class BookController {
     /**
      * Получает список книг с возможностью фильтрации и постраничного отображения.
      *
-     * @param filter  объект фильтрации для поиска книг
+     * @param filter   объект фильтрации для поиска книг
      * @param pageable объект, содержащий информацию о постраничной навигации
      * @return PagedModel<BookDto>, содержащий список книг и информацию о пагинации
      */
@@ -75,12 +77,12 @@ public class BookController {
     }
 
     @PutMapping("/bookUpdate/{id}")
-    public BookDto update ( @PathVariable Long id, @RequestBody @Valid BookDto dto ) {
+    public BookDto update(@PathVariable Long id, @RequestBody @Valid BookDto dto) {
         return bookService.update(id, dto);
     }
 
     @PostMapping("/creareBook")
-    public BookDto create ( @RequestBody @Valid BookDto dto ) {
+    public BookDto create(@RequestBody @Valid BookDto dto) {
         return bookService.create(dto);
     }
 }

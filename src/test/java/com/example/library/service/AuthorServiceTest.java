@@ -1,4 +1,5 @@
 package com.example.library.service;
+
 import com.example.library.dto.AuthorDto;
 import com.example.library.exception.UserAlreadyExistsException;
 import com.example.library.maper.AuthorMapper;
@@ -11,10 +12,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+
 /**
  * Тесты для AuthorService.
  * Проверяет логику создания, обновления, удаления и получения авторов.
@@ -30,6 +34,7 @@ public class AuthorServiceTest {
     private AuthorDto authorDto; // DTO для автора
     @Mock
     private Author author; // Сущность автора
+
     /**
      * Подготовка данных перед каждым тестом.
      * Инициализирует объекты AuthorDto и Author, а также мока для зависимостей.
@@ -40,6 +45,7 @@ public class AuthorServiceTest {
         authorDto = new AuthorDto("Test Author", "Test Country");
         author = new Author(1L, " Test Author", "Test Country");
     }
+
     /**
      * Проверяет, что метод create создает автора, если автор не существует.
      */
@@ -54,6 +60,7 @@ public class AuthorServiceTest {
         assertEquals(authorDto.getName(), createdAuthor.getName());
         verify(authorRepository).save(author);
     }
+
     /**
      * Проверяет, что метод create выбрасывает исключение, если автор уже существует.
      */
@@ -66,6 +73,7 @@ public class AuthorServiceTest {
         Assertions.assertEquals(null, exception.getMessage());
         verify(authorRepository, never()).save(any());
     }
+
     /**
      * Проверяет, что метод update выбрасывает исключение, если автор не существует.
      */
@@ -77,6 +85,7 @@ public class AuthorServiceTest {
         });
         assertEquals("404 NOT_FOUND \"Автор с id `1` не наден\"", exception.getMessage());
     }
+
     /**
      * Проверяет, что метод delete удаляет автора, если автор существует.
      */
@@ -84,11 +93,12 @@ public class AuthorServiceTest {
     void delete_ShouldDeleteAuthor_WhenAuthorExists() {
         when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
         when(authorMapper.toDto(author)).thenReturn(authorDto);
-       AuthorDto deletedAuthor = authorService.delete(1L);
+        AuthorDto deletedAuthor = authorService.delete(1L);
         assertNotNull(deletedAuthor);
         assertEquals(authorDto.getName(), deletedAuthor.getName());
         verify(authorRepository).delete(author);
     }
+
     /**
      * Проверяет, что метод delete возвращает null, если автор не существует.
      */
@@ -99,6 +109,7 @@ public class AuthorServiceTest {
         assertNull(deletedAuthor);
         verify(authorRepository, never()).delete(any());
     }
+
     /**
      * Проверяет, что метод getOne возвращает автора, если автор существует.
      */
@@ -110,6 +121,7 @@ public class AuthorServiceTest {
         assertNotNull(foundAuthor);
         assertEquals(authorDto.getName(), foundAuthor.getName());
     }
+
     /**
      * Проверяет, что метод getOne выбрасывает исключение, если автор не существует.
      */

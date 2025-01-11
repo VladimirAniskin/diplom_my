@@ -1,4 +1,5 @@
 package com.example.library.mod;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.context.annotation.Lazy;
@@ -24,9 +25,8 @@ public class Book {
     @JoinColumn(name = "author")
     private Author author;
     private Integer year;
-    @Column (name="number_of_copies")
+    @Column(name = "number_of_copies")
     private Integer numberOfCopies;
-
 
 
 }

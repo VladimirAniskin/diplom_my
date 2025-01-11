@@ -1,4 +1,5 @@
 package com.example.library.service;
+
 import com.example.library.dto.BorrowRecordsDto;
 import com.example.library.maper.BorrowRecordsMapper;
 import com.example.library.mod.BorrowRecords;
@@ -13,9 +14,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.kafka.core.KafkaTemplate;
+
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
 /**
  * Тесты для BorrowRecordService.
  * Проверяет логику аренды и возврата книг, а также обработку ошибок.
@@ -45,6 +49,7 @@ public class BorrowRecordServiceTest {
         borrowRecordService = new BorrowRecordService(borrowRecordsMapper,
                 borrowRecordsRepository, userRepository, bookRepository);
     }
+
     /**
      * Проверяет, что метод bookRental возвращает BorrowRecordsDto, когда книга успешно арендована.
      */
@@ -69,6 +74,7 @@ public class BorrowRecordServiceTest {
         assertEquals(book.getId(), result.getBookId().getId());
         verify(bookRepository).save(book); // Проверка, что книга была сохранена
     }
+
     /**
      * Проверяет, что метод bookRental выбрасывает EntityNotFoundException, когда книга не найдена.
      */
@@ -85,6 +91,7 @@ public class BorrowRecordServiceTest {
         });
         assertEquals("Книга не найдена с  id: " + borrowRecordsDto.getBookId(), exception.getMessage());
     }
+
     /**
      * Проверяет, что метод bookRental выбрасывает IllegalStateException, когда нет доступных экземпляров книги.
      */
@@ -105,6 +112,7 @@ public class BorrowRecordServiceTest {
         });
         assertEquals("Нет доступных экземпляров книг: 0", exception.getMessage());
     }
+
     /**
      * Проверяет, что метод bookReturn выбрасывает EntityNotFoundException, когда запись о выдаче не найдена.
      */

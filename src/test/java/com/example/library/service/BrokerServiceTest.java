@@ -2,6 +2,7 @@ package com.example.library.service;
 
 import com.example.library.mod.BorrowRecords;
 import com.example.library.mod.User;
+import com.example.library.mod.Book;
 import com.example.library.repo.BorrowRecordsRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -35,8 +36,11 @@ class BrokerServiceTest {
         LocalDate targetDate = currentDate.plusDays(3);
         User user = new User();
         user.setId(1L);
+        Book book = new Book();
+        book.setId(null);
         BorrowRecords record = new BorrowRecords();
         record.setUserId(user);
+        record.setBookId(book);
         record.setReturnDate(targetDate);
         when(borrowRecordsRepository.findBorrowRecordsByReturnDate(targetDate)).thenReturn(Collections.singletonList(record));
         brokerService.returnBook();
